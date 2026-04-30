@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sku-1",
+    "slug": "paralen-500-12tbl",
+    "name": "Paralen 500 mg, 12 tbl",
+    "price_czk": 59,
+    "category": "Léky proti bolesti",
+    "image": "https://placehold.co/200x200/E2001A/FFFFFF?text=Paralen",
+    "in_stock": true
+  },
+  {
+    "id": "sku-2",
+    "slug": "ibalgin-400-24tbl",
+    "name": "Ibalgin 400 mg, 24 tbl",
+    "price_czk": 119,
+    "category": "Léky proti bolesti",
+    "image": "https://placehold.co/200x200/E2001A/FFFFFF?text=Ibalgin",
+    "in_stock": true
+  },
+  {
+    "id": "sku-3",
+    "slug": "vitamin-c-1000-30tbl",
+    "name": "Vitamín C 1000 mg, 30 tbl",
+    "price_czk": 149,
+    "category": "Vitamíny a minerály",
+    "image": "https://placehold.co/200x200/FFCC00/1A1A1A?text=Vitamin+C",
+    "in_stock": true
+  },
+  {
+    "id": "sku-4",
+    "slug": "magnesium-b6-60tbl",
+    "name": "Magnesium B6, 60 tbl",
+    "price_czk": 199,
+    "category": "Vitamíny a minerály",
+    "image": "https://placehold.co/200x200/FFCC00/1A1A1A?text=Magnesium",
+    "in_stock": true
+  },
+  {
+    "id": "sku-5",
+    "slug": "coldrex-12tbl",
+    "name": "Coldrex Horký nápoj, 12 sáčků",
+    "price_czk": 179,
+    "category": "Nachlazení a chřipka",
+    "image": "https://placehold.co/200x200/0066CC/FFFFFF?text=Coldrex",
+    "in_stock": true
+  },
+  {
+    "id": "sku-6",
+    "slug": "nivea-creme-150ml",
+    "name": "Nivea Creme, 150 ml",
+    "price_czk": 89,
+    "category": "Kosmetika a péče",
+    "image": "https://placehold.co/200x200/004F9F/FFFFFF?text=Nivea",
+    "in_stock": true
+  }
+]

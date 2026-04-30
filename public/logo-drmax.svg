@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" width="120" height="40" role="img" aria-label="Dr.MAX">
+  <rect width="120" height="40" fill="#FFFFFF"/>
+  <text x="6" y="28"
+        font-family="'Open Sans', 'Helvetica Neue', Arial, sans-serif"
+        font-weight="800"
+        font-size="22"
+        fill="#E2001A"
+        letter-spacing="-0.5">Dr.MAX</text>
+</svg>

@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --font-drmax: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  --color-drmax-red: #E2001A;
+  --color-drmax-redDark: #C40016;
+  --color-drmax-neutralBg: #F7F7F8;
+  --color-drmax-textPrimary: #1A1A1A;
+  --color-drmax-textMuted: #6B6B6B;
+  --color-drmax-border: #E5E5E5;
+  --color-drmax-accent: #FFCC00;
+}
+
+:root {
+  --font-drmax: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+html,
+body {
+  font-family: var(--font-drmax);
+  background: #F7F7F8;
+  color: #1A1A1A;
+}
+
+button {
+  font-family: inherit;
+}
