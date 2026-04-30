@@ -10,7 +10,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:incidents": "playwright test tests/incidents/",
+    "validate:run": "node --experimental-strip-types scripts/run-validation.ts",
+    "validate:post": "node --experimental-strip-types scripts/post-results.ts",
+    "validate:full": "npm run validate:run | npm run validate:post"
   },
   "dependencies": {
     "next": "^16.1.6",

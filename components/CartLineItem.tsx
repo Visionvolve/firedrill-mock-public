@@ -26,7 +26,7 @@ export function CartLineItem({ item, onRemove }: Props) {
     <li
       className="flex items-center gap-4 py-4 border-b"
       style={{ borderColor: DRMAX_BRAND.border }}
-      data-testid="cart-line-item"
+      data-testid="cart-line"
       data-item-id={item.id}
     >
       <div className="w-20 h-20 bg-[#F7F7F8] rounded shrink-0" aria-hidden />

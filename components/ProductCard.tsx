@@ -12,6 +12,8 @@ export function ProductCard({ product }: { product: Product }) {
       style={{ borderColor: DRMAX_BRAND.border }}
       data-testid="product-card"
       data-product-id={product.id}
+      data-product-slug={product.slug}
+      data-price={product.price_czk}
     >
       <div className="aspect-square w-full bg-[#F7F7F8] flex items-center justify-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
