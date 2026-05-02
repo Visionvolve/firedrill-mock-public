@@ -3,34 +3,49 @@
 import Link from "next/link";
 import { DRMAX_BRAND } from "@/data/brand-tokens";
 import { useCart } from "@/lib/cart-store";
+import { CurrencyToggle } from "./CurrencyToggle";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function SiteHeader() {
   const { items } = useCart();
   const cartCount = items.reduce((sum, it) => sum + it.qty, 0);
+  const router = useRouter();
+  const [search, setSearch] = useState("");
+
+  const onSubmitSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const q = search.trim();
+    if (!q) return;
+    router.push(`/search?q=${encodeURIComponent(q)}`);
+  };
 
   return (
     <header className="w-full">
-      {/* Top red bar — tagline left, cart count right */}
+      {/* Top red bar — tagline left, currency toggle + cart count right */}
       <div
         className="text-white text-sm"
         style={{ backgroundColor: DRMAX_BRAND.red }}
       >
-        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
           <span className="font-semibold">{DRMAX_BRAND.tagline}</span>
-          <Link
-            href="/cart"
-            className="hover:underline flex items-center gap-2"
-            data-testid="header-cart-link"
-          >
-            <span>Košík</span>
-            <span
-              className="inline-flex items-center justify-center min-w-[1.5rem] h-6 px-2 rounded-full bg-white text-xs font-bold"
-              style={{ color: DRMAX_BRAND.red }}
-              data-testid="header-cart-count"
+          <div className="flex items-center gap-4">
+            <CurrencyToggle />
+            <Link
+              href="/cart"
+              className="hover:underline flex items-center gap-2"
+              data-testid="header-cart-link"
             >
-              {cartCount}
-            </span>
-          </Link>
+              <span>Košík</span>
+              <span
+                className="inline-flex items-center justify-center min-w-[1.5rem] h-6 px-2 rounded-full bg-white text-xs font-bold"
+                style={{ color: DRMAX_BRAND.red }}
+                data-testid="header-cart-count"
+              >
+                {cartCount}
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -50,15 +65,21 @@ export function SiteHeader() {
             />
           </Link>
           <div className="flex-1">
-            <input
-              type="search"
-              placeholder="Hledat léky, vitamíny, kosmetiku…"
-              aria-label="Vyhledávání produktů"
-              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2"
-              style={{
-                borderColor: DRMAX_BRAND.border,
-              }}
-            />
+            <form onSubmit={onSubmitSearch} role="search">
+              <input
+                type="search"
+                name="q"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Hledat léky, vitamíny, kosmetiku…"
+                aria-label="Vyhledávání produktů"
+                className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                style={{
+                  borderColor: DRMAX_BRAND.border,
+                }}
+                data-testid="site-search-input"
+              />
+            </form>
           </div>
           <nav className="hidden sm:flex items-center gap-4 text-sm">
             <Link

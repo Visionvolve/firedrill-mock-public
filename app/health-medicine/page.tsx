@@ -2,7 +2,7 @@ import productsData from "@/data/products.json";
 import { ProductCard } from "@/components/ProductCard";
 import type { Product } from "@/lib/cart-store";
 
-const products = productsData as Product[];
+const products = productsData.products as Product[];
 
 export default function HealthMedicinePage() {
   return (

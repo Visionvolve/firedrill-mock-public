@@ -17,6 +17,9 @@ playwright-report/
 test-results/
 .playwright/
 
+# TypeScript incremental build cache (created by `tsc --noEmit` runs)
+tsconfig.tsbuildinfo
+
 # OS / editor
 .DS_Store
 .vscode/
