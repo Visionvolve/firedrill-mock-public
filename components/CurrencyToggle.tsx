@@ -86,7 +86,7 @@ export function CurrencyToggle() {
         className={
           "rounded px-2 py-0.5 font-semibold transition-colors " +
           (currency === "czk"
-            ? "bg-white text-[#E2001A]"
+            ? "bg-white text-[#46B350]"
             : "bg-transparent text-white border border-white/40 hover:border-white")
         }
         data-testid="currency-toggle-czk"
@@ -100,7 +100,7 @@ export function CurrencyToggle() {
         className={
           "rounded px-2 py-0.5 font-semibold transition-colors " +
           (currency === "pln"
-            ? "bg-white text-[#E2001A]"
+            ? "bg-white text-[#46B350]"
             : "bg-transparent text-white border border-white/40 hover:border-white")
         }
         data-testid="currency-toggle-pln"

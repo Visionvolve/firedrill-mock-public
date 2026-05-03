@@ -56,7 +56,7 @@ export function CartLineItem({ item, onRemove }: Props) {
       <button
         type="button"
         onClick={handleRemove}
-        className="text-sm text-[#6B6B6B] hover:text-[#E2001A] underline"
+        className="text-sm text-[#6B6B6B] hover:text-[#46B350] underline"
         data-testid="remove-line"
       >
         Odstranit

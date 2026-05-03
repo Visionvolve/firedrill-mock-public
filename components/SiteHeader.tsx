@@ -84,13 +84,13 @@ export function SiteHeader() {
           <nav className="hidden sm:flex items-center gap-4 text-sm">
             <Link
               href="/health-medicine"
-              className="text-[#1A1A1A] hover:text-[#E2001A] font-semibold"
+              className="text-[#1A1A1A] hover:text-[#46B350] font-semibold"
             >
               Zdraví a léky
             </Link>
             <Link
               href="/cart"
-              className="text-[#1A1A1A] hover:text-[#E2001A] font-semibold"
+              className="text-[#1A1A1A] hover:text-[#46B350] font-semibold"
             >
               Košík ({cartCount})
             </Link>

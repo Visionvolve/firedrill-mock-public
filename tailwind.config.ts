@@ -9,8 +9,8 @@ const config: Config = {
     extend: {
       colors: {
         drmax: {
-          red: "#E2001A",
-          redDark: "#C40016",
+          red: "#46B350",
+          redDark: "#358A3F",
           neutralBg: "#F7F7F8",
           textPrimary: "#1A1A1A",
           textMuted: "#6B6B6B",
