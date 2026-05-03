@@ -6,8 +6,8 @@ import { CURRENCY_RATES } from "@/lib/pricing";
 import { DRMAX_BRAND } from "@/data/brand-tokens";
 
 /**
- * Product detail page action surface — "add to cart" button + a localized
- * price hint. The PLN price shown here uses the same per-line round
+ * Product detail page action surface — quantity stepper + "Do košíku" button +
+ * a localized price hint. The PLN price shown here uses the same per-line round
  * function as cart subtotal computation, so a customer sees the same value on
  * the product page as they will on the cart subtotal line. (Both rely on the
  * INC-A buggy rounding policy.)
@@ -22,21 +22,48 @@ export function ProductDetailActions({ product }: { product: Product }) {
     <>
       {currency === "pln" && (
         <p
-          className="text-sm text-[#6B6B6B]"
+          className="text-sm text-[#5E5E5E]"
           data-testid="detail-price-pln"
         >
           Přibližně {localizedPln} zł
         </p>
       )}
-      <button
-        type="button"
-        onClick={() => add(product, 1)}
-        className="mt-4 inline-block rounded-md px-6 py-3 text-base font-semibold text-white"
-        style={{ backgroundColor: DRMAX_BRAND.red }}
-        data-testid="detail-add-to-cart"
-      >
-        Přidat do košíku
-      </button>
+      <div className="mt-4 flex items-stretch gap-2">
+        {/* Quantity stepper — visual placeholder matches drmax.cz layout */}
+        <div
+          className="inline-flex items-stretch rounded border bg-white"
+          style={{ borderColor: DRMAX_BRAND.border }}
+        >
+          <button
+            type="button"
+            aria-label="Snížit množství"
+            className="px-3 text-lg text-[#5E5E5E] hover:bg-gray-50"
+          >
+            −
+          </button>
+          <span className="px-4 self-center font-bold tabular-nums">1</span>
+          <button
+            type="button"
+            aria-label="Zvýšit množství"
+            className="px-3 text-lg text-[#5E5E5E] hover:bg-gray-50"
+          >
+            +
+          </button>
+        </div>
+        <button
+          type="button"
+          onClick={() => add(product, 1)}
+          className="flex-1 rounded px-6 py-3 text-base font-bold text-white"
+          style={{ backgroundColor: DRMAX_BRAND.greenSuccess }}
+          data-testid="detail-add-to-cart"
+        >
+          Do košíku
+        </button>
+      </div>
+      <p className="mt-3 text-xs text-[#5E5E5E] flex items-center gap-2">
+        <span aria-hidden className="text-base">🚚</span>
+        Doprava zdarma při nákupu nad 1&nbsp;500&nbsp;Kč. Limit pro přihlášené 499&nbsp;Kč.
+      </p>
     </>
   );
 }

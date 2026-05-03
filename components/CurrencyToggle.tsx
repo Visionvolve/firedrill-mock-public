@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import type { DisplayCurrency } from "@/lib/pricing";
+import { DRMAX_BRAND } from "@/data/brand-tokens";
 
 const STORAGE_KEY = "firedrill_display_currency";
 
@@ -79,15 +80,15 @@ export function CurrencyToggle() {
       className="flex items-center gap-1 text-xs"
       data-testid="currency-toggle"
     >
-      <span className="text-white/80 mr-1">Měna:</span>
+      <span className="text-[#5E5E5E] mr-1">Měna:</span>
       <button
         type="button"
         onClick={() => setCurrency("czk")}
         className={
           "rounded px-2 py-0.5 font-semibold transition-colors " +
           (currency === "czk"
-            ? "bg-white text-[#46B350]"
-            : "bg-transparent text-white border border-white/40 hover:border-white")
+            ? "bg-[#47850A] text-white"
+            : "bg-transparent text-[#5E5E5E] border border-[#DCDCDC] hover:border-[#47850A]")
         }
         data-testid="currency-toggle-czk"
         aria-pressed={currency === "czk"}
@@ -100,14 +101,16 @@ export function CurrencyToggle() {
         className={
           "rounded px-2 py-0.5 font-semibold transition-colors " +
           (currency === "pln"
-            ? "bg-white text-[#46B350]"
-            : "bg-transparent text-white border border-white/40 hover:border-white")
+            ? "bg-[#47850A] text-white"
+            : "bg-transparent text-[#5E5E5E] border border-[#DCDCDC] hover:border-[#47850A]")
         }
         data-testid="currency-toggle-pln"
         aria-pressed={currency === "pln"}
       >
         PLN
       </button>
+      {/* DRMAX_BRAND import retained for downstream styling consistency. */}
+      <span className="sr-only" aria-hidden>{DRMAX_BRAND.greenDark}</span>
     </div>
   );
 }

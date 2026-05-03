@@ -1,27 +1,69 @@
 @import "tailwindcss";
 
 @theme {
-  --font-drmax: "Open Sans", "Helvetica Neue", Arial, sans-serif;
-  --color-drmax-red: #46B350;
-  --color-drmax-redDark: #358A3F;
+  --font-drmax: "Mulish", "Open Sans", "Helvetica Neue", Arial, sans-serif;
+
+  /* Brand red — Dr.Max wordmark + sale prices */
+  --color-drmax-red: #E4002B;
+  --color-drmax-redDark: #AF0023;
+
+  /* Brand green — "+" in Dr.Max+ logo, primary CTAs */
+  --color-drmax-green: #78BE20;
+  --color-drmax-greenDark: #47850A;
+  --color-drmax-greenSuccess: #3C911E;
+
+  /* Neutrals */
   --color-drmax-neutralBg: #F7F7F8;
-  --color-drmax-textPrimary: #1A1A1A;
-  --color-drmax-textMuted: #6B6B6B;
-  --color-drmax-border: #E5E5E5;
-  --color-drmax-accent: #FFCC00;
+  --color-drmax-surfaceBg: #FFFFFF;
+  --color-drmax-textPrimary: #1B1B1B;
+  --color-drmax-textMuted: #5E5E5E;
+  --color-drmax-textSubtle: #7A7A7A;
+  --color-drmax-border: #DCDCDC;
+
+  /* Loyalty / Dr.Max+ */
+  --color-drmax-loyaltyBlue: #09629D;
+
+  /* Info banner */
+  --color-drmax-infoBg: #E5F1FE;
+
+  /* Accent */
+  --color-drmax-accent: #FFE500;
 }
 
 :root {
-  --font-drmax: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-drmax: "Mulish", "Open Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 html,
 body {
   font-family: var(--font-drmax);
   background: #F7F7F8;
-  color: #1A1A1A;
+  color: #1B1B1B;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button {
   font-family: inherit;
+}
+
+/* Headings: tight, semibold (closer to Proxima Vara feel than Open Sans alone) */
+h1, h2, h3, h4 {
+  letter-spacing: -0.01em;
+}
+
+/* Pill button — used for CTAs that mirror the real Dr.MAX rounded buttons */
+.btn-pill {
+  border-radius: 999px;
+}
+
+/* Compact rounded button — product card "Do košíku" buttons on drmax.cz are
+ * radius 4px, NOT pills (the pills are only the icon-bg account buttons). */
+.btn-rect {
+  border-radius: 4px;
+}
+
+/* Subtle horizontal rule used between header sections */
+.hr-soft {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }

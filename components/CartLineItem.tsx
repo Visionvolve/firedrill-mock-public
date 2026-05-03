@@ -1,8 +1,11 @@
 "use client";
 
 import type { CartItem } from "@/lib/cart-store";
-import { useCart } from "@/lib/cart-store";
+import { useCart, type Product } from "@/lib/cart-store";
 import { DRMAX_BRAND } from "@/data/brand-tokens";
+import productsData from "@/data/products.json";
+
+const allProducts = productsData.products as Product[];
 
 type Props = {
   item: CartItem;
@@ -21,6 +24,9 @@ export function CartLineItem({ item, onRemove }: Props) {
   };
 
   const linePrice = item.price_czk * item.qty;
+  // Find image from products data (cart item may not carry it)
+  const product = allProducts.find((p) => p.id === item.id);
+  const image = product?.image;
 
   return (
     <li
@@ -29,10 +35,20 @@ export function CartLineItem({ item, onRemove }: Props) {
       data-testid="cart-line"
       data-item-id={item.id}
     >
-      <div className="w-20 h-20 bg-[#F7F7F8] rounded shrink-0" aria-hidden />
+      <div
+        className="w-20 h-20 bg-white rounded shrink-0 flex items-center justify-center border p-1"
+        style={{ borderColor: DRMAX_BRAND.border }}
+      >
+        {image ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={image} alt={item.name} className="max-h-full max-w-full object-contain" />
+        ) : (
+          <span aria-hidden className="text-2xl">📦</span>
+        )}
+      </div>
       <div className="flex-1 min-w-0">
-        <p className="font-bold text-[#1A1A1A] truncate">{item.name}</p>
-        <p className="text-xs text-[#6B6B6B] mt-1">
+        <p className="font-bold text-[#1B1B1B] truncate">{item.name}</p>
+        <p className="text-xs text-[#5E5E5E] mt-1">
           {item.price_czk} Kč / ks
         </p>
       </div>
@@ -42,12 +58,12 @@ export function CartLineItem({ item, onRemove }: Props) {
         value={item.qty}
         onChange={(e) => setQty(item.id, Number(e.target.value) || 1)}
         aria-label="Počet kusů"
-        className="w-16 rounded-md border px-2 py-1 text-sm text-center"
+        className="w-16 rounded border px-2 py-1 text-sm text-center bg-white"
         style={{ borderColor: DRMAX_BRAND.border }}
         data-testid="line-qty"
       />
       <div
-        className="w-24 text-right font-bold"
+        className="w-24 text-right font-extrabold tabular-nums"
         style={{ color: DRMAX_BRAND.red }}
         data-testid="line-price"
       >
@@ -56,7 +72,7 @@ export function CartLineItem({ item, onRemove }: Props) {
       <button
         type="button"
         onClick={handleRemove}
-        className="text-sm text-[#6B6B6B] hover:text-[#46B350] underline"
+        className="text-sm text-[#5E5E5E] hover:text-[#E4002B] underline"
         data-testid="remove-line"
       >
         Odstranit

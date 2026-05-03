@@ -7,55 +7,82 @@
     {
       "id": "sku-1",
       "slug": "paralen-500-12tbl",
-      "name": "Paralen 500 mg, 12 tbl",
-      "price_czk": 59,
+      "name": "Paralen 500 mg, 30 tbl",
+      "price_czk": 89,
       "category": "Léky proti bolesti",
-      "image": "https://placehold.co/200x200/46B350/FFFFFF?text=Paralen",
+      "image": "/products/teether-mam.png",
       "in_stock": true
     },
     {
       "id": "sku-2",
       "slug": "ibalgin-400-12tbl",
-      "name": "Ibalgin 400 mg, 12 tbl",
-      "price_czk": 49,
+      "name": "Ibalgin 400 mg, 24 tbl",
+      "price_czk": 149,
       "category": "Léky proti bolesti",
-      "image": "https://placehold.co/200x200/46B350/FFFFFF?text=Ibalgin",
+      "image": "/products/teether-pink.png",
       "in_stock": true
     },
     {
       "id": "sku-3",
       "slug": "vitamin-c-1000-30tbl",
-      "name": "Vitamín C 1000 mg, 30 tbl",
-      "price_czk": 23,
+      "name": "Vitamín C 1000 mg s šípky, 30 tbl",
+      "price_czk": 119,
       "category": "Vitamíny a minerály",
-      "image": "https://placehold.co/200x200/FFCC00/1A1A1A?text=Vitamin+C",
+      "image": "/products/jacobs-coffee.png",
       "in_stock": true
     },
     {
       "id": "sku-4",
       "slug": "magnesium-b6-60tbl",
-      "name": "Magnesium B6, 60 tbl",
-      "price_czk": 17,
+      "name": "Magnesium B6 forte, 60 tbl",
+      "price_czk": 199,
       "category": "Vitamíny a minerály",
-      "image": "https://placehold.co/200x200/FFCC00/1A1A1A?text=Magnesium",
+      "image": "/products/teether-curaprox.png",
       "in_stock": true
     },
     {
       "id": "sku-5",
       "slug": "coldrex-12tbl",
-      "name": "Coldrex Horký nápoj, 12 sáčků",
-      "price_czk": 89,
+      "name": "Coldrex Horký nápoj Citron, 14 sáčků",
+      "price_czk": 169,
       "category": "Nachlazení a chřipka",
-      "image": "https://placehold.co/200x200/0066CC/FFFFFF?text=Coldrex",
+      "image": "/products/teether-orange.png",
       "in_stock": true
     },
     {
       "id": "sku-6",
       "slug": "nivea-creme-150ml",
-      "name": "Nivea Creme, 150 ml",
-      "price_czk": 119,
+      "name": "Vichy Minéral 89 booster, 50 ml",
+      "price_czk": 749,
       "category": "Kosmetika a péče",
-      "image": "https://placehold.co/200x200/004F9F/FFFFFF?text=Nivea",
+      "image": "/products/vichy-serum.png",
+      "in_stock": true
+    },
+    {
+      "id": "sku-7",
+      "slug": "omron-m2-comfort",
+      "name": "Omron M2 Comfort tlakoměr",
+      "price_czk": 1849,
+      "category": "Zdravotnické přístroje",
+      "image": "/products/omron-blood-pressure.png",
+      "in_stock": true
+    },
+    {
+      "id": "sku-8",
+      "slug": "mam-cooler-clip-tyrkysove",
+      "name": "MAM Mini Cooler & Clip 2m+ kousátko, tyrkysové",
+      "price_czk": 157,
+      "category": "Matka a dítě",
+      "image": "/products/teether-mam.png",
+      "in_stock": true
+    },
+    {
+      "id": "sku-9",
+      "slug": "drbrowns-aquacool",
+      "name": "Dr. Brown's AquaCool chladivé kousátko",
+      "price_czk": 199,
+      "category": "Matka a dítě",
+      "image": "/products/drbrowns-teether.png",
       "in_stock": true
     }
   ]

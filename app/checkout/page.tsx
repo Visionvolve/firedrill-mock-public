@@ -33,8 +33,8 @@ export default async function CheckoutPage({
 
       <button
         type="button"
-        className="mt-6 rounded-md px-6 py-3 text-base font-semibold text-white"
-        style={{ backgroundColor: "#46B350" }}
+        className="mt-6 rounded px-6 py-3 text-base font-bold text-white"
+        style={{ backgroundColor: "#3C911E" }}
         data-testid="place-order"
       >
         Dokončit objednávku
