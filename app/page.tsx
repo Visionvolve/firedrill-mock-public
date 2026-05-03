@@ -55,7 +55,7 @@ export default function HomePage() {
             <div className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/products/vichy-serum.png"
+                src="/products/vichy-mineral-89.png"
                 alt="Akční produkt"
                 className="h-64 w-auto object-contain drop-shadow-xl"
               />
