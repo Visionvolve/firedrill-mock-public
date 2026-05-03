@@ -1,0 +1,14 @@
+# Phase 22 (D-10): tar-exclude list for `npm run submit`.
+# Falls back to .gitignore when missing — this file is the explicit list shipped
+# with the public repo so participants get the same exclusions on a fresh clone
+# before any tooling generates a .gitignore.
+node_modules/
+.git/
+.next/
+test-results/
+playwright-report/
+*.tar.gz
+.DS_Store
+.env
+.env.*
+coverage/

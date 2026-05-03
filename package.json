@@ -12,6 +12,7 @@
     "lint": "next lint",
     "test": "playwright test",
     "test:incidents": "playwright test tests/incidents/",
+    "submit": "node --experimental-strip-types scripts/submit.ts",
     "validate:run": "node --experimental-strip-types scripts/run-validation.ts",
     "validate:post": "node --experimental-strip-types scripts/post-results.ts",
     "validate:full": "npm run validate:run | npm run validate:post"
