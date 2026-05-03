@@ -1,97 +1,109 @@
-# firedrill-mock
+# Firedrill Mock Shop
 
-A standalone Next.js 16 + Tailwind app — the **buggy Dr.MAX e-shop** that workshop
-participants will fix during the Phase 20 firedrill exercise (Dr.MAX Agentic
-Engineering Module 2 → `fire_drill` phase).
+Welcome to the Firedrill workshop. This is a small e-commerce site with five
+production incidents currently breaking the customer experience. Your job is
+to fix them under time pressure, with AI assistance, in 45 minutes.
 
-This app is a fixture for an internal training exercise. It uses placeholder
-branding inspired by drmax.cz (logo wordmark, brand red, neutrals) but is **not**
-the real Dr.MAX trademark. It is never deployed publicly outside the workshop.
+## How the workshop runs
 
-## Purpose
+- 12 participants, each working in their own isolated VPS slot (p1..p12).
+- 5 incidents fire on a randomized schedule over the first few minutes.
+- Each fix gets validated by an automated Playwright spec running against your
+  slot's preview URL.
+- Your kanban (in the workshop microsite) updates live as incidents move from
+  todo -> in_progress -> done.
+- The facilitator is on stage. The two co-presenters can answer questions in
+  the room.
 
-For Wave 1, ships a vertical slice with **two pages**:
+## The five incidents (customer reports)
 
-- `/health-medicine` — catalog with 6 SKUs in a grid, "Přidat do košíku" buttons
-- `/cart` — cart UI with subtotal that contains **INC-E (cart total stale on remove)**
-  pre-seeded as the v1 firedrill bug
+These are the symptoms customers reported. The bug locations are NOT given —
+that's the exercise.
 
-INC-E lives in `components/Cart.tsx`. The bug pattern (regex-anchored signature
-`if (items.length >= seen)`) is what downstream incident specs grep for. The
-intended fix is to drop the `>=` guard and recompute subtotal on every items
-change (or use `useMemo`).
+- **INC-A:** Customer reports their multi-item cart total is off by 1 CZK on
+  every order with mixed-currency items.
+- **INC-B:** Monitoring: search-api p95 latency 8s+ when users type single
+  letters. 502 errors spiking.
+- **INC-C:** Customer report: "My SubClub points were credited to yesterday —
+  I checked out at 00:30."
+- **INC-D:** Slovak customer: "Why are these prices in CZK and showing
+  Czech-only items? I'm in Bratislava."
+- **INC-E:** QA: Several customers complaining the cart total stays the same
+  after they remove items. Reproducible in Chrome.
 
-## Run locally
+(Hints become available in the kanban after a few minutes if you're stuck.)
 
-```bash
-cd firedrill-mock
+## Setup
+
+```
+git clone https://github.com/Visionvolve/firedrill-mock-public.git
+cd firedrill-mock-public
 npm install
-npm run dev          # http://localhost:3000
+npm run dev      # opens http://localhost:3000 — verify the shop loads
 ```
 
-Other scripts:
-
-```bash
-npm run build        # next build (uses output: 'standalone')
-npm run start        # production server
-npm test             # playwright tests (requires npx playwright install on first run)
-```
-
-## Visual notes
-
-The visual reference is https://www.drmax.cz/zdravi-a-leky (the Health & Medicine
-catalog page on the live Dr.MAX Czech online pharmacy). Direct fetching of the
-page during scaffolding hit a Cloudflare bot challenge, so the brand tokens were
-sourced from prior visual inspection captured in the Phase 20 plan and fixed in
-`data/brand-tokens.ts`. Key cues we replicate:
-
-- **Brand red** `#E2001A` for the top utility bar, primary CTAs, and prices
-- **Neutral background** `#F7F7F8` with `#E5E5E5` borders for a clean catalog grid
-- **Open Sans** as the primary typeface (loaded from Google Fonts)
-- **Header layout**: red top bar (tagline left, cart count right) over a white
-  nav row with logo + search + category links
-- **Product card**: square image area, category caption, bold title, large red
-  price, full-width red "Přidat do košíku" button
-- **Footer**: dark slab with three columns of customer-service / about / help
-  links and a thin red top accent border
-
-## Architecture
+You can also run the validation specs locally before submitting (much faster
+feedback than round-tripping to the workshop validator):
 
 ```
-firedrill-mock/
-├── app/
-│   ├── layout.tsx          — HTML shell, header + footer
-│   ├── page.tsx            — landing
-│   ├── health-medicine/    — catalog
-│   └── cart/               — cart page
-├── components/
-│   ├── SiteHeader.tsx      — red top bar + white nav
-│   ├── SiteFooter.tsx      — dark footer with link columns
-│   ├── ProductCard.tsx     — grid card + "add to cart"
-│   ├── CartLineItem.tsx    — qty/remove row
-│   └── Cart.tsx            — subtotal block (INC-E lives here)
-├── lib/
-│   ├── cart-store.ts       — useCart() — localStorage-backed
-│   └── pricing.ts          — computeSubtotal() — stable signature
-├── data/
-│   ├── products.json       — 6 SKUs
-│   └── brand-tokens.ts     — DRMAX_BRAND constant
-├── public/logo-drmax.svg   — placeholder wordmark
-├── tests/                  — playwright incident specs (added in Plan 20-03)
-├── Dockerfile              — multi-stage node:22-alpine, Next standalone
-├── next.config.mjs         — output: 'standalone'
-├── tailwind.config.ts      — drmax color palette
-└── playwright.config.ts    — testDir: './tests', BASE_URL configurable
+npx playwright install chromium    # first time only
+npm run test:incidents
 ```
 
-## Deployment
+## Deploy your fix
 
-See Plan 20-04+ for the staging VPS deploy (per-participant Docker container +
-git branch on a shared bare repo at `/srv/firedrill/firedrill-mock.git`).
-Container is built from this directory's `Dockerfile`.
+When the kanban shows your fix on a green incident, you can deploy:
 
-## Disclaimer
+```
+npm run submit
+```
 
-This is a training fixture. The Dr.MAX wordmark, colors, and product data are
-**approximations** used solely for an internal workshop exercise and are not
-intended for any external use.
+The script will prompt for your cohort code and deploy token (visible in the
+kanban "Show deploy token" button — click it to copy to clipboard). Or set
+them as environment variables:
+
+```
+FIREDRILL_COHORT=M2TEST FIREDRILL_TOKEN=frd_... npm run submit
+```
+
+Or save them in `~/.firedrill/token` (one line each, token first):
+
+```
+mkdir -p ~/.firedrill
+printf "frd_yourtoken...\nM2TEST\n" > ~/.firedrill/token
+```
+
+The script tars your working tree (excluding node_modules, .git, .next,
+test-results, playwright-report — see `.firedrillignore`) and uploads it to
+the workshop microsite. The server runs the validation spec against your
+deployed code and the kanban updates live.
+
+If the script reports `passed`, you're done with that incident. If it reports
+`failed`, the kanban link in the output shows which assertion failed and
+why — open it, refine the fix, and `npm run submit` again.
+
+## Reset
+
+If your changes broke the slot beyond use, click "Reset my slot" in your
+kanban (or ask the facilitator to wipe all slots).
+
+## Tips
+
+- **Read the symptoms before touching anything.** Five minutes of reading
+  saves twenty minutes of grep-driven exploration.
+- **Use the time pressure.** The clock is the point of the exercise; lean
+  into the discomfort of shipping under deadline.
+- **Don't refactor.** If the fix is a one-line patch, ship the one-line
+  patch. The exercise is debugging speed, not code aesthetics.
+- **AI assistance is encouraged.** Open Claude Code, paste the symptom,
+  let the agent grep your repo. The exercise teaches AI-assisted debugging,
+  not AI-free hero work.
+- **Run the local specs before submitting.** `npm run test:incidents` runs
+  in seconds; the round-trip to the workshop validator takes ~30s per try.
+
+## What this is NOT
+
+- Production code. The shop is a teaching toy with synthetic incidents.
+- A real customer-facing platform. No real payments, no real data.
+- Affiliated with Dr.MAX. Visual design is an approximation used solely for
+  this internal training exercise.
