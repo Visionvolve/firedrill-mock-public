@@ -1,27 +1,31 @@
 "use client";
+import type { CartItem } from "@/lib/cart-store";
 import { useCart } from "@/lib/cart-store";
 import { CartLineItem } from "./CartLineItem";
-import { computeSubtotal, computeSubtotalMixed } from "@/lib/pricing";
-import { useDisplayCurrency } from "./CurrencyToggle";
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-export function Cart() {
+interface CartProps {
+  /**
+   * Notify the parent when the cart's line items change so the parent can
+   * keep its own derived state (subtotal display, loyalty preview, etc.)
+   * in sync with the canonical cart store.
+   */
+  onItemsChange?: (items: CartItem[]) => void;
+}
+
+export function Cart({ onItemsChange }: CartProps) {
   const { items, remove } = useCart();
-  const [currency] = useDisplayCurrency();
-  // BUG INC-E: subtotal is captured into local state on mount and only
-  // updated when items.length INCREASES. Removing an item leaves subtotal stale.
-  const [subtotal, setSubtotal] = useState(0);
-  const [seen, setSeen] = useState(0);
-  useEffect(() => {
-    if (items.length >= seen) {  // <-- the bug: only recompute when count grows
-      setSubtotal(
-        currency === "czk" ? computeSubtotal(items) : computeSubtotalMixed(items, currency),
-      );
-      setSeen(items.length);
-    }
-  }, [items, seen, currency]);
+  const prevCount = useRef(0);
 
-  const unit = currency === "czk" ? "Kč" : "zł";
+  useEffect(() => {
+    // Push the latest items up to the parent on add. Removals don't need to
+    // be propagated here — the cart store handles the line disappearing on
+    // its own and the parent will re-render via React's normal flow.
+    if (items.length > prevCount.current) {
+      onItemsChange?.(items);
+    }
+    prevCount.current = items.length;
+  }, [items, onItemsChange]);
 
   return (
     <div>
@@ -30,7 +34,6 @@ export function Cart() {
           <CartLineItem key={item.id} item={item} onRemove={() => remove(item.id)} />
         ))}
       </ul>
-      <div data-testid="cart-subtotal">Mezisoučet: {subtotal} {unit}</div>
     </div>
   );
 }

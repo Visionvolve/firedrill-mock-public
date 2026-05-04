@@ -15,14 +15,25 @@ import { DRMAX_BRAND } from "@/data/brand-tokens";
  * The component accepts an `orderTimeIso` override so the Playwright spec can
  * inject a deterministic timestamp via `?orderTime=...` instead of relying on
  * the wall-clock at test time.
+ *
+ * Also accepts a `cartSubtotal` prop so the cart page can preview the points
+ * the customer will earn for the current order (1 point per 100 Kč).
  */
-export function LoyaltyPanel({ orderTimeIso }: { orderTimeIso?: string }) {
+interface LoyaltyPanelProps {
+  orderTimeIso?: string;
+  cartSubtotal?: number;
+}
+
+export function LoyaltyPanel({ orderTimeIso, cartSubtotal }: LoyaltyPanelProps) {
   const [day, setDay] = useState<string>("");
 
   useEffect(() => {
     const orderDate = orderTimeIso ? new Date(orderTimeIso) : new Date();
     setDay(bucketLoyaltyDay(orderDate));
   }, [orderTimeIso]);
+
+  const points =
+    typeof cartSubtotal === "number" ? Math.floor(cartSubtotal / 100) : null;
 
   return (
     <div
@@ -35,6 +46,12 @@ export function LoyaltyPanel({ orderTimeIso }: { orderTimeIso?: string }) {
         Body za tuto objednávku budou připsány k věrnostnímu dni{" "}
         <strong data-testid="loyalty-day">{day}</strong>.
       </p>
+      {points !== null && (
+        <p className="text-sm text-[#6B6B6B] mt-2">
+          Získáte <strong data-testid="loyalty-points">{points}</strong> bodů
+          za tento nákup.
+        </p>
+      )}
     </div>
   );
 }

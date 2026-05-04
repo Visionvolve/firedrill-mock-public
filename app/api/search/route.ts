@@ -1,13 +1,5 @@
 // Phase 20-10 (D-09 INC-B): autocomplete-style /api/search endpoint.
-//
-// BUG INC-B: short prefixes (length < 3) take a pathological branch that burns
-// CPU for ~6 seconds and then returns 502. With autocomplete typing into the
-// header search box, every keystroke up to the third character hits this path.
-// Customer-visible symptom: "search-api p95 latency 8s+ when users type single
-// letters; 502 errors spiking."
-//
-// Canonical fix: gate the heavy scoring loop on `q.length >= 2` (or replace it
-// with a simple substring matcher) and return early for short queries.
+// (Spoiler comments will be removed at mirror time.)
 
 import { NextRequest, NextResponse } from "next/server";
 import productsData from "@/data/products.json";
@@ -15,29 +7,42 @@ import type { Product } from "@/lib/cart-store";
 
 const products = productsData.products as Product[];
 
+// Pinned VPC address for spelling-svc — bypasses internal DNS so the
+// autocomplete path doesn't depend on the resolver during cold-start.
+const SPELLING_SVC_URL = "http://10.255.255.7:8080/correct";
+
+/**
+ * Internal spelling-correction microservice for short queries.
+ * (Originally added so single-letter typos like "j" → "g" still surfaced
+ * relevant products. Long queries skip this — at 3+ chars the user clearly
+ * knows what they want.)
+ */
+async function correctSpelling(q: string): Promise<string> {
+  try {
+    const res = await fetch(SPELLING_SVC_URL + "?q=" + encodeURIComponent(q), {
+      signal: AbortSignal.timeout(2000),
+    });
+    if (!res.ok) return q;
+    const data = (await res.json()) as { corrected?: string };
+    return data.corrected ?? q;
+  } catch {
+    // Network down or timeout — fall back to original query.
+    return q;
+  }
+}
+
 export async function GET(req: NextRequest) {
   const q = (req.nextUrl.searchParams.get("q") || "").toLowerCase();
   if (!q) {
     return NextResponse.json({ results: [] });
   }
 
-  if (q.length < 3) {
-    // BUG: simulate a pathological scoring loop that burns CPU for 6s and
-    // then returns 502. Real-world equivalent would be an O(n*q*products)
-    // scoring pass over a large catalog with no early termination.
-    const start = Date.now();
-    // Touch the variable so a build optimizer doesn't elide the loop body.
-    let scratch = 0;
-    while (Date.now() - start < 6000) {
-      scratch += products.filter((p) =>
-        p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q),
-      ).length;
-    }
-    return new NextResponse(`Search timeout (work=${scratch})`, { status: 502 });
-  }
+  const effectiveQ = q.length < 3 ? await correctSpelling(q) : q;
 
   const results = products.filter((p) =>
-    p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q),
+    p.name.toLowerCase().includes(effectiveQ) ||
+    p.category.toLowerCase().includes(effectiveQ),
   );
+
   return NextResponse.json({ results });
 }
