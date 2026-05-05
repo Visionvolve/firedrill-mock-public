@@ -1,5 +1,3 @@
-// Phase 20-10 (D-09 INC-B): autocomplete-style /api/search endpoint.
-// (Spoiler comments will be removed at mirror time.)
 
 import { NextRequest, NextResponse } from "next/server";
 import productsData from "@/data/products.json";

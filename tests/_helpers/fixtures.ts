@@ -70,14 +70,6 @@ async function readCartQty(page: Page, slug: string): Promise<number> {
   }
 }
 
-/**
- * Set the display currency the cart/checkout components honor.
- *
- * INC-A specs invoke this AFTER seeding the cart so the buggy mixed-currency
- * path is exercised on the cart subtotal. Implementation matches the
- * `firedrill_display_currency` localStorage key + `firedrill:currency-change`
- * synthetic event used by `components/CurrencyToggle.tsx`.
- */
 export async function setDisplayCurrency(
   page: Page,
   currency: "czk" | "pln",

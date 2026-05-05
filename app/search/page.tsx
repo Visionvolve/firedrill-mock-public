@@ -7,14 +7,6 @@ const allProducts = productsData.products as Product[];
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
-/**
- * Search results page. Performs the same matching as /api/search but inline
- * (server-side render) so the page itself doesn't trigger the INC-B latency
- * spike — the bug surfaces only via the autocomplete-style XHR path.
- *
- * INC-B spec hits /api/search directly so it can time the API regardless of
- * whether the page calls the API or matches inline.
- */
 export default async function SearchPage({
   searchParams,
 }: {
