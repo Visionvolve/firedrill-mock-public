@@ -21,6 +21,13 @@ import { homedir } from "node:os";
 import { createInterface } from "node:readline/promises";
 import { Buffer } from "node:buffer";
 
+// G4 fix: prevent macOS from injecting AppleDouble resource fork files
+// (`._*`) into the tarball, which the server-side validator rejects with
+// "non-allowed entry name". COPYFILE_DISABLE=1 stops the fork from being
+// emitted in the first place; --exclude="._*" defends against any that
+// might already exist on disk.
+process.env.COPYFILE_DISABLE = "1";
+
 const API = process.env.FIREDRILL_API_URL ?? "https://workshop.visionvolve.com";
 
 interface TokenInfo {
@@ -67,6 +74,11 @@ function tarWorkingTree(): Buffer {
       "--exclude=playwright-report",
       "--exclude=.firedrillignore",
       "--exclude=*.tar.gz",
+      // G4 fix: macOS resource forks (AppleDouble) get rejected by the
+      // server-side tarball validator. COPYFILE_DISABLE=1 stops the fork
+      // from being emitted; this exclude defends against any that already
+      // exist on disk (e.g. from a prior unzip).
+      "--exclude=._*",
       ".",
     ],
     { encoding: "buffer", maxBuffer: 50 * 1024 * 1024, shell: false },
