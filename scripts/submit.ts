@@ -101,8 +101,14 @@ async function pollRun(
   token: string,
 ): Promise<void> {
   const url = `${API}/api/cohorts/${cohort}/firedrill/runs/${runId}`;
-  // 60 polls × 2s = 2 min; covers most validation runs (median ~30s per Plan 20-08).
-  for (let i = 0; i < 60; i++) {
+  // G15 — explicit 90-second client-side timeout. Median validation is
+  // ~30s; 90s is generous. If we time out, point the participant at the
+  // kanban (which is the authoritative live status) and the facilitator,
+  // rather than spinning forever or printing a vague timeout. 45 polls
+  // × 2s = 90s.
+  const POLL_INTERVAL_MS = 2000;
+  const MAX_POLLS = 45;
+  for (let i = 0; i < MAX_POLLS; i++) {
     try {
       const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
@@ -126,9 +132,17 @@ async function pollRun(
       console.log(`\nPoll error (will retry): ${(e as Error).message}`);
     }
     process.stdout.write(".");
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
   }
-  console.log("\nTimed out waiting for validation. Check kanban for live status.");
+  console.log(
+    "\n\x1b[33m⚠ Validation taking longer than 90s — your deploy may still be running.\x1b[0m",
+  );
+  console.log(
+    "  Check the live kanban in your participant view for authoritative status,",
+  );
+  console.log(
+    "  and flag the facilitator if it stays stuck for more than another minute.",
+  );
 }
 
 async function main(): Promise<void> {
