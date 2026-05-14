@@ -5,13 +5,6 @@ import { useDisplayCurrency } from "./CurrencyToggle";
 import { CURRENCY_RATES } from "@/lib/pricing";
 import { DRMAX_BRAND } from "@/data/brand-tokens";
 
-/**
- * Product detail page action surface — quantity stepper + "Do košíku" button +
- * a localized price hint. The PLN price shown here uses the same per-line round
- * function as cart subtotal computation, so a customer sees the same value on
- * the product page as they will on the cart subtotal line. (Both rely on the
- * INC-A buggy rounding policy.)
- */
 export function ProductDetailActions({ product }: { product: Product }) {
   const { add } = useCart();
   const [currency] = useDisplayCurrency();

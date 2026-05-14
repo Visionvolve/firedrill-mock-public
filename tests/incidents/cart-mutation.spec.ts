@@ -1,25 +1,8 @@
-// Phase 20 (D-09 incident E, D-13 validation flow):
-// INC-E — "Cart total stale on remove"
-//
-// Symptom shown to participants:
-//   "QA: Several customers complaining the cart total stays the same
-//    after they remove items. Reproducible in Chrome."
-//
-// Root cause (hidden from participants): components/Cart.tsx subscribes to
-// items but only recomputes subtotal when `items.length >= seen` — so a
-// removal does not refresh the displayed subtotal.
-//
-// Canonical fix: drop the >= guard so the subtotal recomputes on every
-// items change.
-//
-// This spec FAILS against the buggy seed and PASSES once the guard is
-// removed. The post-receive validation worker (Plan 20-08) reads pass/fail
-// from `--reporter=json` output via scripts/run-validation.ts.
 
 import { test, expect } from "@playwright/test";
 import { addProductToCart } from "../_helpers/fixtures";
 
-test.describe("INC-E: cart total stale on remove", () => {
+test.describe("Cart subtotal recomputes correctly on add, remove, and quantity change", () => {
   // Each test starts with a fresh cart — clear localStorage on the origin
   // before navigating, so previous specs / re-runs don't bleed state in.
   test.beforeEach(async ({ page, baseURL }) => {
@@ -48,7 +31,6 @@ test.describe("INC-E: cart total stale on remove", () => {
       .locator('button:has-text("Odstranit")')
       .click();
 
-    // The subtotal MUST recompute. With INC-E present it stays stale.
     await expect(page.locator('[data-testid="cart-subtotal"]')).toContainText(
       String(price2),
       { timeout: 5_000 },

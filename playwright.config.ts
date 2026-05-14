@@ -24,10 +24,6 @@ export default defineConfig({
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-    // Force UTC inside the dev server so INC-C (loyalty TZ bug) reproduces
-    // identically on every developer machine. In production the Docker
-    // container runs UTC; aligning the test webServer matches that, and the
-    // CET/CEST fixture timestamps in INC-C.spec.ts assume UTC server time.
     env: { TZ: "UTC" },
   },
 });

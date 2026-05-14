@@ -1,23 +1,3 @@
-// Phase 20 (D-13, D-14): Headless runner that converts Playwright spec results
-// into the JSON shape the firedrill validation API expects.
-//
-// Usage:
-//   - As CLI:  `npm run validate:run` (executes playwright + emits JSON to stdout)
-//   - Imported: `import { runValidation } from "./run-validation"`
-//
-// Output shape (single line of JSON to stdout):
-//   {
-//     "INC-E": { "passed": true|false, "output": "<stderr/stack tail>", "duration_ms": <int> },
-//     ...one entry per INC-X.spec.ts file present...
-//   }
-//
-// Exit codes:
-//   0 — Playwright ran successfully (regardless of whether tests passed)
-//   1 — Playwright itself crashed (could not run)
-//
-// Note: a non-zero exit from Playwright (because tests failed) is NOT propagated.
-// The runner's job is to emit structured results; the post-receive worker reads
-// the JSON and decides what to do next.
 
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
